@@ -65,7 +65,7 @@ jobs:
         path: zipper
 
     - name: Android kernel build
-      uses: lemniskett/android-kernel-actions@0.4.0
+      uses: lemniskett/android-kernel-actions@v0.4.0
       id: build
       env:
         NAME: ${{ github.event.inputs.RELEASE_NAME }}
