@@ -1,10 +1,10 @@
-name: build on dispatch
+name: build kernel on dispatch
 
 on:
   workflow_dispatch:
     inputs:
-      KERNEL_TREE_URL:
-        description: 'kernel tree url'
+      KERNEL_TREE:
+        description: 'kernel tree'
         required: true
         default: ''
       KERNEL_TREE_BRANCH:
@@ -38,12 +38,12 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - name: display params
       run: |
         echo "::group::user env variables"
-        echo "kernel tree URL: ${{ github.event.inputs.KERNEL_TREE_URL }}"
+        echo "kernel tree: ${{ github.event.inputs.KERNEL_TREE }}"
         echo "kernel tree:branch ${{ github.event.inputs.KERNEL_TREE_BRANCH }}"
         echo "defconfig: ${{ github.event.inputs.DEFCONFIG }}"
         echo "compiler: ${{ github.event.inputs.COMPILER }}"
