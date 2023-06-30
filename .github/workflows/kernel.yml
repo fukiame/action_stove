@@ -55,7 +55,7 @@ jobs:
     - name: checkout kernel source
       uses: actions/checkout@v3
       with:
-        repository: ${{ github.event.inputs.KERNEL_TREE_URL }}
+        repository: ${{ github.event.inputs.KERNEL_TREE }}
         ref: ${{ github.event.inputs.KERNEL_TREE_BRANCH }}
 
     - name: checkout zipper
