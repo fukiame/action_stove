@@ -1,0 +1,82 @@
+name: build on dispatch
+
+on:
+  workflow_dispatch:
+    inputs:
+      KERNEL_TREE_URL:
+        description: 'kernel tree url'
+        required: true
+        default: ''
+      KERNEL_TREE_BRANCH:
+        description: 'kernel tree branch'
+        required: true
+        default: ''
+      DEFCONFIG:
+        description: 'defconfig'
+        required: true
+        default: '_defconfig'
+      COMPILER:
+        description: 'compiler (the toolchain)'
+        required: true
+        default: 'proton-clang/master/binutils'
+      RELEASE_NAME:
+        description: 'release name'
+        required: true
+        default: ''
+      IMAGE:
+        description: 'image'
+        required: true
+        default: 'Image.gz-dtb'
+      ZIPPER:
+        description: 'zipper (anykernel3 template)'
+        required: true
+        default: 'osm0sis/AnyKernel3'
+      PYTHON_VERSION:
+        description: 'pythom ver'
+        required: true
+        default: '3'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: display params
+      run: |
+        echo "::group::user env variables"
+        echo "kernel tree URL: ${{ github.event.inputs.KERNEL_TREE_URL }}"
+        echo "kernel tree:branch ${{ github.event.inputs.KERNEL_TREE_BRANCH }}"
+        echo "defconfig: ${{ github.event.inputs.DEFCONFIG }}"
+        echo "compiler: ${{ github.event.inputs.COMPILER }}"
+        echo "release name: ${{ github.event.inputs.RELEASE_NAME }}"
+        echo "image ${{ github.event.inputs.IMAGE }}"
+        echo "zipper: ${{ github.event.inputs.ZIPPER }}"
+        echo "python ver: ${{ github.event.inputs.PYTHON_VER }}"
+        echo "::endgroup::"
+    - name: checkout kernel source
+      uses: actions/checkout@v3
+      with:
+        repository: ${{ github.event.inputs.KERNEL_TREE_URL }}
+        ref: ${{ github.event.inputs.KERNEL_TREE_BRANCH }}
+
+    - name: checkout zipper
+      uses: actions/checkout@v3
+      with:
+        repository: ${{ github.event.inputs.ZIPPER }}
+        path: zipper
+
+    - name: Android kernel build
+      uses: lemniskett/android-kernel-actions@master
+      id: build
+      env:
+        NAME: ${{ github.event.inputs.RELEASE_NAME }}
+      with:
+        arch: arm64
+        compiler: ${{ github.event.inputs.COMPILER }}
+        defconfig: ${{ github.event.inputs.DEFCONFIG }}
+        image: ${{ github.event.inputs.IMAGE }}
+
+    - name: release build
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: ${{ steps.build.outputs.outfile }}
+        token: ${{ secrets.GITHUB_TOKEN }}	
