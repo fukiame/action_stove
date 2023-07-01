@@ -38,7 +38,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - name: display params
       run: |
@@ -68,7 +68,7 @@ jobs:
       run: echo CROSS_COMPILE_COMPAT=arm-linux-gnueabi- >> $GITHUB_ENV
 
     - name: Android kernel build
-      uses: lemniskett/android-kernel-actions@v0.4.0
+      uses: lemniskett/android-kernel-actions@master
       id: build
       env:
         NAME: ${{ github.event.inputs.RELEASE_NAME }}
