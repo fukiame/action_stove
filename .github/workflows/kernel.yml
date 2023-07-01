@@ -73,6 +73,11 @@ jobs:
     - name: export python ver to env
       run: echo PYTHON_VERSION=${{ github.event.inputs.PYTHON_VERSION }} >> $GITHUB_ENV
 
+    - name: nuke some packages
+      run: |
+        sudo apt-fast update -qy
+        sudo apt purge firefox google-chrome-stable temurin-*-jdk adoptopenjdk-* adoptium-ca-certificates openjdk-* 
+
     - name: Android kernel build
       uses: fukiame/android-kernel-actions@master
       id: build
