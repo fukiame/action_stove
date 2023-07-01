@@ -32,7 +32,7 @@ on:
         required: true
         default: 'osm0sis/AnyKernel3'
       PYTHON_VERSION:
-        description: 'pythom ver'
+        description: 'python ver'
         required: true
         default: '3'
 
@@ -64,8 +64,8 @@ jobs:
         repository: ${{ github.event.inputs.ZIPPER }}
         path: zipper
 
-    - name: manually set CROSS_COMPILE_COMPAT
-      run: echo CROSS_COMPILE_COMPAT=arm-linux-gnueabi- >> $GITHUB_ENV
+    - name: export python ver to env
+      run: echo PYTHON_VERSION=${{ github.event.inputs.PYTHON_VERSION }} >> $GITHUB_ENV
 
     - name: Android kernel build
       uses: fukiame/android-kernel-actions@master
