@@ -76,7 +76,7 @@ jobs:
     - name: nuke some packages
       run: |
         sudo apt-fast update -qy
-        sudo apt purge firefox google-chrome-stable temurin-*-jdk adoptopenjdk-* adoptium-ca-certificates openjdk-* 
+        sudo apt purge firefox google-chrome-stable
 
     - name: Android kernel build
       uses: fukiame/android-kernel-actions@master
