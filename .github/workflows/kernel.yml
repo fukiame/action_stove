@@ -31,6 +31,10 @@ on:
         description: 'zipper (anykernel3 template)'
         required: true
         default: 'osm0sis/AnyKernel3'
+      ZIPPER_BRANCH:
+        description: 'zipper branch'
+        required: true
+        default: 'master'
       PYTHON_VERSION:
         description: 'python ver'
         required: true
