@@ -18,7 +18,7 @@ on:
       COMPILER:
         description: 'compiler (the toolchain)'
         required: true
-        default: 'proton-clang/master/binutils'
+        default: 'neutron-clang/latest'
       RELEASE_NAME:
         description: 'release name'
         required: true
@@ -68,7 +68,7 @@ jobs:
       run: echo CROSS_COMPILE_COMPAT=arm-linux-gnueabi- >> $GITHUB_ENV
 
     - name: Android kernel build
-      uses: lemniskett/android-kernel-actions@master
+      uses: fukiame/android-kernel-actions@master
       id: build
       env:
         NAME: ${{ github.event.inputs.RELEASE_NAME }}
