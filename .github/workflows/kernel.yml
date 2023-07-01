@@ -64,9 +64,8 @@ jobs:
         repository: ${{ github.event.inputs.ZIPPER }}
         path: zipper
 
-    - name: workaround: manually set CROSS_COMPILE_COMPAT
-      run: |
-        export CROSS_COMPILE_COMPAT=arm-linux-gnueabi-
+    - name: manually set CROSS_COMPILE_COMPAT
+      run: export CROSS_COMPILE_COMPAT=arm-linux-gnueabi-
 
     - name: Android kernel build
       uses: lemniskett/android-kernel-actions@v0.4.0
