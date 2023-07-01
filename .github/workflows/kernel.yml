@@ -44,13 +44,13 @@ jobs:
       run: |
         echo "::group::user env variables"
         echo "kernel tree: ${{ github.event.inputs.KERNEL_TREE }}"
-        echo "kernel tree:branch ${{ github.event.inputs.KERNEL_TREE_BRANCH }}"
+        echo "kernel tree branch: ${{ github.event.inputs.KERNEL_TREE_BRANCH }}"
         echo "defconfig: ${{ github.event.inputs.DEFCONFIG }}"
         echo "compiler: ${{ github.event.inputs.COMPILER }}"
         echo "release name: ${{ github.event.inputs.RELEASE_NAME }}"
-        echo "image ${{ github.event.inputs.IMAGE }}"
+        echo "image: ${{ github.event.inputs.IMAGE }}"
         echo "zipper: ${{ github.event.inputs.ZIPPER }}"
-        echo "python ver: ${{ github.event.inputs.PYTHON_VER }}"
+        echo "python ver: ${{ github.event.inputs.PYTHON_VERSION }}"
         echo "::endgroup::"
     - name: checkout kernel source
       uses: actions/checkout@v3
