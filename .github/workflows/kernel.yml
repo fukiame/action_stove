@@ -64,6 +64,10 @@ jobs:
         repository: ${{ github.event.inputs.ZIPPER }}
         path: zipper
 
+    - uses: rokibhasansagar/slimhub_actions@main
+      with:
+        retain: "docker_buildkit"
+
     - name: export python ver to env
       run: echo PYTHON_VERSION=${{ github.event.inputs.PYTHON_VERSION }} >> $GITHUB_ENV
 
