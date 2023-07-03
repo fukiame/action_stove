@@ -94,4 +94,5 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         artifacts: ${{ steps.build.outputs.outfile }}
-        token: ${{ secrets.GITHUB_TOKEN }}	
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: ${{ github.run_number }}
