@@ -95,6 +95,6 @@ jobs:
     - name: release build
       uses: ncipollo/release-action@v1
       with:
-        artifacts: ${{ steps.build.outputs.outfile }}
+        artifacts: "zipper/*.zip"
         token: ${{ secrets.GITHUB_TOKEN }}
         tag: ${{ github.run_number }}
