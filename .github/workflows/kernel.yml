@@ -97,4 +97,4 @@ jobs:
       with:
         artifacts: "zipper/*.zip"
         token: ${{ secrets.GITHUB_TOKEN }}
-        tag: ${{ github.run_number }}
+        tag: "${{ github.run_number }}_${{ github.run_attempt }}"
