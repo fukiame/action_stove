@@ -6,15 +6,15 @@ on:
       KERNEL_TREE:
         description: 'kernel tree'
         required: true
-        default: ''
+        default: 'TelegramAt25/android_kernel_xiaomi_selene'
       KERNEL_TREE_BRANCH:
         description: 'kernel tree branch'
         required: true
-        default: ''
+        default: 'thirteen'
       DEFCONFIG:
         description: 'defconfig'
         required: true
-        default: '_defconfig'
+        default: 'selene_defconfig'
       COMPILER:
         description: 'compiler (the toolchain)'
         required: true
@@ -22,7 +22,7 @@ on:
       RELEASE_NAME:
         description: 'release name'
         required: true
-        default: ''
+        default: 'niigo_legacy'
       IMAGE:
         description: 'image'
         required: true
@@ -30,11 +30,11 @@ on:
       ZIPPER:
         description: 'zipper (anykernel3 template)'
         required: true
-        default: 'osm0sis/AnyKernel3'
+        default: 'fukiame/AnyKernel3-niigo'
       ZIPPER_BRANCH:
         description: 'zipper branch'
         required: true
-        default: 'master'
+        default: 'selene-old'
       PYTHON_VERSION:
         description: 'python ver'
         required: true
