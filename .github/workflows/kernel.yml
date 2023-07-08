@@ -18,7 +18,7 @@ on:
       COMPILER:
         description: 'compiler (the toolchain)'
         required: true
-        default: 'neutron-clang/latest'
+        default: 'zyc-clang/latest'
       RELEASE_NAME:
         description: 'release name'
         required: true
