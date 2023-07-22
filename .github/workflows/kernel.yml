@@ -39,14 +39,6 @@ on:
         description: 'python ver'
         required: true
         default: '3'
-      KBUILD_USER:
-        description: 'KBUILD_BUILD_USER'
-        required: false
-        default: 'nijuugo_ji'
-      KBUILD_HOST:
-        description: 'KBUILD_BUILD_HOST'
-        required: false
-        default: 'nightgram'
 
 jobs:
   build:
@@ -99,8 +91,10 @@ jobs:
         compiler: ${{ github.event.inputs.COMPILER }}
         defconfig: ${{ github.event.inputs.DEFCONFIG }}
         image: ${{ github.event.inputs.IMAGE }}
-        kbuild_user: ${{ github.event.inputs.KBUILD_USER }}
-        kbuild_host: ${{ github.event.inputs.KBUILD_HOST }}
+        # "you may only define up to 10 `inputs` for a `workflow_dispatch` event"
+        # go brr
+        kbuild_user: nijuugoji
+        kbuild_host: nightgram
 
     - name: release build
       uses: ncipollo/release-action@v1
