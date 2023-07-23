@@ -75,6 +75,11 @@ jobs:
     - name: export python ver to env
       run: echo PYTHON_VERSION=${{ github.event.inputs.PYTHON_VERSION }} >> $GITHUB_ENV
 
+    - name: set kbuild user and host
+      run: |
+        echo KBUILD_BUILD_USER=nijuugo-ji >> $GITHUB_ENV
+        echo KBUILD_BUILD_HOST=telegram-de >> $GITHUB_ENV
+
     - name: nuke some packages
       run: |
         sudo apt-fast update -qy
@@ -91,10 +96,6 @@ jobs:
         compiler: ${{ github.event.inputs.COMPILER }}
         defconfig: ${{ github.event.inputs.DEFCONFIG }}
         image: ${{ github.event.inputs.IMAGE }}
-        # "you may only define up to 10 `inputs` for a `workflow_dispatch` event"
-        # go brr
-        kbuild_user: nijuugoji
-        kbuild_host: nightgram
 
     - name: release build
       uses: ncipollo/release-action@v1
