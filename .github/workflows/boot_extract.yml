@@ -1,0 +1,40 @@
+name: build kernel on dispatch
+
+on:
+  workflow_dispatch:
+    inputs:
+      RECOVERY_LINK:
+        description: 'recovery rom link'
+        required: true
+        default: ''
+      PARTITIONS:
+        description: 'partitions to extract, comma separated'
+        required: true
+        default: 'boot,dtbo'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: fetch payload-dumper-go
+      run: |
+        curl -Lo a.tar.gz "https://github.com/ssut/payload-dumper-go/releases/download/1.2.2/payload-dumper-go_1.2.2_linux_amd64.tar.gz"
+        tar -zxvf a.tar.gz
+
+    - name: fetch rom
+      run: |
+        curl -Lo rom.zip "${{ github.event.inputs.RECOVERY_LINK }}"
+
+    - name: extract boot and dtbo
+      run: |
+        ./payload-dumper-go -p ${{ github.event.inputs.PARTITIONS }} rom.zip
+
+    - name: release build
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "extracted*/*.img"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: "${{ github.run_number }}_${{ github.run_attempt }}"
+        body: "extracted from ${{ github.event.inputs.RECOVERY_LINK }}"
