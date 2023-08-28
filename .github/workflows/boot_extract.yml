@@ -1,4 +1,4 @@
-name: build kernel on dispatch
+name: abu boot
 
 on:
   workflow_dispatch:
@@ -27,7 +27,7 @@ jobs:
       run: |
         curl -Lo rom.zip "${{ github.event.inputs.RECOVERY_LINK }}"
 
-    - name: extract boot and dtbo
+    - name: extract
       run: |
         ./payload-dumper-go -p ${{ github.event.inputs.PARTITIONS }} rom.zip
 
@@ -36,5 +36,5 @@ jobs:
       with:
         artifacts: "extracted*/*.img"
         token: ${{ secrets.GITHUB_TOKEN }}
-        tag: "${{ github.run_number }}_${{ github.run_attempt }}"
+        tag: "${{ github.run_number }}_${{ github.run_attempt }}_ex"
         body: "extracted from ${{ github.event.inputs.RECOVERY_LINK }}"
