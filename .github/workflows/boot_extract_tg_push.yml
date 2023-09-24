@@ -20,9 +20,10 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
+    - name: checkout
+      uses: actions/checkout@v3
+
     - name: fetch payload-dumper-go
       run: |
         curl -Lo a.tar.gz "https://github.com/ssut/payload-dumper-go/releases/download/1.2.2/payload-dumper-go_1.2.2_linux_amd64.tar.gz"
