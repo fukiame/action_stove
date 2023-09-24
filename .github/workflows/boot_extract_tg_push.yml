@@ -10,7 +10,12 @@ on:
       PARTITIONS:
         description: 'partitions to extract, comma separated'
         required: true
-        default: 'boot,dtbo'
+        default: 'boot'
+
+env:
+  BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+  CHAT_ID: ${{ secrets.CHAT_ID }}
+  LINK: ${{ github.event.inputs.RECOVERY_LINK }}
 
 jobs:
   build:
@@ -25,16 +30,25 @@ jobs:
 
     - name: fetch rom
       run: |
-        curl -Lo rom.zip "${{ github.event.inputs.RECOVERY_LINK }}"
+        curl -Lo rom.zip "$LINK"
 
     - name: extract
       run: |
-        ./payload-dumper-go -p ${{ github.event.inputs.PARTITIONS }} rom.zip
+        ./payload-dumper-go -o extracted -p ${{ github.event.inputs.PARTITIONS }} rom.zip
+        if [ $(echo "$LINK" | grep ".miui.com/") ]; then
+          prefix="$(echo $LINK | cut -d/ -f4 | cut -dV -f2)_"
+        fi
+        maindir=$(pwd)
+        cd extracted
+        for f in *.img; do
+          dest="$maindir/${prefix}$f"
+          echo "md5: $(md5sum $f)" >> "$dest.info"
+          mv "$f" "$dest"
+        done
 
-    - name: release build
-      uses: ncipollo/release-action@v1
-      with:
-        artifacts: "extracted*/*.img"
-        token: ${{ secrets.GITHUB_TOKEN }}
-        tag: "${{ github.run_number }}_${{ github.run_attempt }}_ex"
-        body: "extracted from ${{ github.event.inputs.RECOVERY_LINK }}"
+    - name: push to tg
+      run: |
+        for img in *.img ; do
+          bash tg_utils.sh up "$img" "$(cat "$img.info")"
+        done
+ 
