@@ -44,15 +44,15 @@ jobs:
         for f in *.img; do
           dest="$maindir/${prefix}$f"
           zip -9 "$f.zip" "$f"
-          echo "zip md5: $(md5sum $f.zip | cut -d" " -f1)" > "$dest.info"
-          echo "image md5: $(md5sum $f | cut -d" " -f1)" >> "$dest.info"
-          echo "unzip for the image, dont flash the zip" >> "$dest.info"
+          echo "zip md5: $(md5sum $f.zip | cut -d" " -f1)" > "$dest.zip.info"
+          echo "image md5: $(md5sum $f | cut -d" " -f1)" >> "$dest.zip.info"
+          echo "unzip for the image, dont flash the zip" >> "$dest.zip.info"
           mv "$f.zip" "$maindir"
         done
 
     - name: push to tg
       run: |
-        for img in *.zip ; do
-          bash -x tg_utils.sh up "$img" "$(cat "$img.info")"
+        for zip in *.zip ; do
+          bash -x tg_utils.sh up "$zip" "$(cat "$zip.info")"
         done
  
