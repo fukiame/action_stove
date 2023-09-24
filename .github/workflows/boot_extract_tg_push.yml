@@ -44,12 +44,12 @@ jobs:
         for f in *.img; do
           fname="$prefix$f"
           dest="$maindir/$fname"
-          mv "$f" "$prefix$f"
+          mv "$f" "$fname"
           zip -9 "$fname.zip" "$fname"
-          echo "zip md5: $(md5sum $fname.zip | cut -d" " -f1)" >> "$dest.info"
-          echo "image md5: $(md5sum $fname | cut -d" " -f1)" >> "$dest.info"
-          echo "unzip for the image, dont flash the zip" >> "$dest.info"
-          mv "$f.zip" "$maindir"
+          echo "zip md5: $(md5sum $fname.zip | cut -d" " -f1)" >> "$dest.zip.info"
+          echo "image md5: $(md5sum $fname | cut -d" " -f1)" >> "$dest.zip.info"
+          echo "unzip for the image, dont flash the zip" >> "$dest.zip.info"
+          mv "$fname.zip" "$maindir"
         done
 
     - name: push to tg
