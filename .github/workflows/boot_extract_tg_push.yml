@@ -43,9 +43,10 @@ jobs:
         cd extracted
         for f in *.img; do
           dest="$maindir/${prefix}$f"
-          echo "md5: $(md5sum $f)" >> "$dest.info"
-          echo "unzip for the image, dont flash the zip" >> "$dest.info"
           zip -9 "$f" "$f"
+          echo "zip md5: $(md5sum $f.zip)" >> "$dest.info"
+          echo "image md5: $(md5sum $f)" >> "$dest.info"
+          echo "unzip for the image, dont flash the zip" >> "$dest.info"
           mv "$f.zip" "$maindir"
         done
 
