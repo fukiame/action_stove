@@ -1,0 +1,60 @@
+name: fire abu boot
+
+on:
+  workflow_dispatch:
+    inputs:
+      RECOVERY_LINK:
+        description: 'recovery rom link'
+        required: true
+        default: ''
+      PARTITIONS:
+        description: 'partitions to extract, comma separated'
+        required: true
+        default: 'boot'
+
+env:
+  BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+  CHAT_ID: -1002107296802
+  LINK: ${{ github.event.inputs.RECOVERY_LINK }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+
+    - name: fetch payload-dumper-go
+      run: |
+        curl -Lo a.tar.gz "https://github.com/ssut/payload-dumper-go/releases/download/1.2.2/payload-dumper-go_1.2.2_linux_amd64.tar.gz"
+        tar -zxvf a.tar.gz
+
+    - name: fetch rom
+      run: |
+        curl -Lo rom.zip "$LINK"
+
+    - name: extract
+      run: |
+        ./payload-dumper-go -o extracted -p ${{ github.event.inputs.PARTITIONS }} rom.zip
+        if [ $(echo "$LINK" | grep ".miui.com/") ]; then
+          prefix="$(echo $LINK | cut -d/ -f4 | cut -dV -f2)_"
+        fi
+        maindir=$(pwd)
+        cd extracted
+        for f in *.img; do
+          fname="$prefix$f"
+          dest="$maindir/$fname"
+          mv "$f" "$fname"
+          zip -9 "$fname.zip" "$fname"
+          echo "zip md5: $(md5sum $fname.zip | cut -d" " -f1)" >> "$dest.zip.info"
+          echo "image md5: $(md5sum $fname | cut -d" " -f1)" >> "$dest.zip.info"
+          echo "unzip for the image, dont flash the zip" >> "$dest.zip.info"
+          mv "$fname.zip" "$maindir"
+        done
+
+    - name: push to tg
+      run: |
+        for zip in *.zip ; do
+          bash -x tg_utils.sh up "$zip" "$(cat "$zip.info")"
+        done
+ 
