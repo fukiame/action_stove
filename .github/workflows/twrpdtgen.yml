@@ -44,7 +44,7 @@ jobs:
 
     - name: run twrpdtgen
       run: |
-        python3 -m twrpdtgen "extracted*/${{ github.event.inputs.TW_PARTITION }}.img"
+        python3 -m twrpdtgen "./dest/${{ github.event.inputs.TW_PARTITION }}.img"
         tar -czf dt.tar.gz ./device
         mv dt.tar.gz ./dest/
 
