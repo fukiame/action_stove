@@ -1,0 +1,57 @@
+name: abu boot
+
+on:
+  workflow_dispatch:
+    inputs:
+      RECOVERY_LINK:
+        description: 'recovery rom link'
+        required: true
+        default: ''
+      PARTITIONS:
+        description: 'partitions to extract and send back'
+        required: true
+        default: 'boot,dtbo'
+      TW_PARTITION:
+        description: 'partition used to generate the tree'
+        required: true
+        default: 'boot'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: fetch payload-dumper-go
+      run: |
+        curl -Lo a.tar.gz "https://github.com/ssut/payload-dumper-go/releases/download/1.2.2/payload-dumper-go_1.2.2_linux_amd64.tar.gz"
+        tar -zxvf a.tar.gz
+
+    - name: install twrpdtgen
+      run: |
+        sudo apt install cpio
+        pip3 install twrpdtgen
+
+    - name: fetch rom
+      run: |
+        curl -Lo rom.zip "${{ github.event.inputs.RECOVERY_LINK }}"
+
+    - name: extract partitions
+      run: |
+        ./payload-dumper-go -p ${{ github.event.inputs.PARTITIONS }} rom.zip
+        mkdir dest
+        mv "extracted*/*.img" ./dest/
+
+    - name: run twrpdtgen
+      run: |
+        python3 -m twrpdtgen "extracted*/${{ github.event.inputs.TW_PARTITION }}.img"
+        tar -czf dt.tar.gz ./device
+        mv dt.tar.gz ./dest/
+
+    - name: release build
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "dest/*"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: "${{ github.run_number }}_${{ github.run_attempt }}_tw"
+        body: "extracted from ${{ github.event.inputs.RECOVERY_LINK }}"
