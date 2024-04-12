@@ -45,7 +45,7 @@ jobs:
     - name: run twrpdtgen
       run: |
         python3 -m twrpdtgen "./dest/${{ github.event.inputs.TW_PARTITION }}.img"
-        tar -czf dt.tar.gz ./device
+        tar -czf dt.tar.gz ./output
         mv dt.tar.gz ./dest/
 
     - name: release build
