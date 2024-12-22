@@ -37,7 +37,7 @@ jobs:
       run: |
         ./payload-dumper-go -o extracted -p ${{ github.event.inputs.PARTITIONS }} rom.zip
         if [ $(echo "$LINK" | grep ".miui.com/") ]; then
-          prefix="$(echo $LINK | cut -d/ -f4 | cut -dV -f2)_"
+          prefix="$(echo $LINK | cut -d/ -f4)_"
         fi
         maindir=$(pwd)
         cd extracted
